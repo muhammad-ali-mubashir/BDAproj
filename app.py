@@ -4,7 +4,7 @@ Provides 4 main features: QA interface, performance evaluation, parameter analys
 """
 import streamlit as st
 import os
-from dotenv import load_dotenv
+
 from retrieval import RetrievalPipeline
 from generator import AnswerGenerator
 from evaluation import Evaluator
@@ -14,8 +14,7 @@ from recommendations import RecommendationEngine
 import json
 import pandas as pd
 
-# Load environment variables
-load_dotenv()
+
 
 # Page config
 st.set_page_config(
