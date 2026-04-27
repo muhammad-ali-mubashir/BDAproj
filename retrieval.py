@@ -1,3 +1,7 @@
+"""
+Retrieval Pipeline Module - Orchestrates the three indexing methods for document retrieval.
+Handles loading, indexing, and querying across TF-IDF, MinHash+LSH, and SimHash methods.
+"""
 from ingestion import extract_text_from_pdf, chunk_text
 from indexing import BaselineIndex, MinHashLSHIndex, SimHashIndex
 from typing import List, Dict

@@ -1,3 +1,7 @@
+"""
+NUST Handbook QA System - Interactive Streamlit Dashboard
+Provides 4 main features: QA interface, performance evaluation, parameter analysis, and scalability testing.
+"""
 import streamlit as st
 import os
 from dotenv import load_dotenv

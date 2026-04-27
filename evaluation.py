@@ -1,3 +1,7 @@
+"""
+Evaluation Module - Benchmarks the three retrieval methods on accuracy, speed, and memory usage.
+Runs on 14 test queries to measure performance differences between methods.
+"""
 import time
 import psutil
 import os

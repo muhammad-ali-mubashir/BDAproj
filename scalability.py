@@ -1,3 +1,7 @@
+"""
+Scalability Testing Module - Evaluates how well retrieval methods scale with larger datasets.
+Tests performance on 1x, 2x, 5x, 10x duplicated corpus sizes to measure Big Data capability.
+"""
 import time
 import os
 import psutil

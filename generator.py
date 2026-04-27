@@ -1,3 +1,7 @@
+"""
+Answer Generation Module - Uses LLM to generate answers from retrieved context.
+Supports both OpenAI and Groq APIs for flexible LLM selection.
+"""
 import os
 from openai import OpenAI
 from typing import List, Dict

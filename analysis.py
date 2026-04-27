@@ -1,3 +1,7 @@
+"""
+Parameter Sensitivity Analysis Module - Tests different parameters for each retrieval method.
+Evaluates MinHash (num_perm), LSH (threshold), and SimHash (hash_bits) to find optimal settings.
+"""
 import time
 import numpy as np
 from ingestion import extract_text_from_pdf, chunk_text

@@ -1,3 +1,7 @@
+"""
+Data Ingestion Module - Extracts text from PDF and splits into overlapping chunks.
+Prepares raw handbook content for indexing and retrieval.
+"""
 import PyPDF2
 import re
 from typing import List, Dict

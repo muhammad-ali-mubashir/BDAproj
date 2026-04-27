@@ -1,3 +1,7 @@
+"""
+Indexing Module - Three retrieval methods for the handbook QA system.
+Implements: TF-IDF (baseline), MinHash+LSH (approximate), and SimHash (locality-sensitive hashing).
+"""
 import numpy as np
 import hashlib
 from sklearn.feature_extraction.text import TfidfVectorizer
