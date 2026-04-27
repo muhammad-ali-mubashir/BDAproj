@@ -345,7 +345,7 @@ with tab1:
     # Initialize Pipeline
     @st.cache_resource
     def get_pipeline():
-        pdf_path = "BDAproj/Undergraduate-Handbook.pdf"
+        pdf_path = "Undergraduate-Handbook.pdf"
         if not os.path.exists(pdf_path):
             st.error(f"File {pdf_path} not found in the directory!")
             return None
@@ -459,7 +459,7 @@ with tab1:
                         st.markdown("_Discover other handbook sections related to your query:_")
                         
                         try:
-                            recommender = RecommendationEngine("BDAproj/Undergraduate-Handbook.pdf")
+                            recommender = RecommendationEngine("Undergraduate-Handbook.pdf")
                             recommendations = recommender.get_recommendations(query, all_retrieved_chunks, k=3)
                             
                             if recommendations:
@@ -514,7 +514,7 @@ with tab2:
         if st.button("▶️ Run Evaluation (14 Test Queries)", key="eval_btn", use_container_width=True):
             st.info("🔍 **System Status**: Comparing Baseline (TF-IDF), MinHash+LSH, and SimHash on accuracy and speed across 14 real-world queries.", icon="🔍")
             try:
-                evaluator = Evaluator("BDAproj/Undergraduate-Handbook.pdf")
+                evaluator = Evaluator("Undergraduate-Handbook.pdf")
                 test_queries = [
                     "What is the minimum GPA requirement?",
                     "What happens if a student fails a course?",
@@ -702,7 +702,7 @@ with tab3:
         if st.button("▶️ Run Parameter Analysis (5-10 min)", key="analysis_btn", use_container_width=True):
             st.info("⚙️ **System Status**: Optimizing MinHash num_perm, LSH threshold, and SimHash hash_bits to find the best settings for accuracy and speed.", icon="⚙️")
             try:
-                analyzer = ParameterAnalyzer("BDAproj/Undergraduate-Handbook.pdf")
+                analyzer = ParameterAnalyzer("Undergraduate-Handbook.pdf")
                 results = analyzer.run_all_analysis()
                 st.success("✅ Parameter analysis completed!", icon="✅")
                 
@@ -780,7 +780,7 @@ with tab4:
         if st.button("▶️ Run Scalability Test (15-30 min)", key="scalability_btn", use_container_width=True):
             st.info("📊 **System Status**: Testing how all three retrieval methods handle Big Data by scaling the handbook from 1x (137 chunks) to 10x (1370 chunks).", icon="📊")
             try:
-                tester = ScalabilityTester("BDAproj/Undergraduate-Handbook.pdf")
+                tester = ScalabilityTester("Undergraduate-Handbook.pdf")
                 results = tester.test_scalability(factors=[1, 2, 5, 10])
                 tester.print_scalability_summary(results)
                 st.success("✅ Scalability test completed!", icon="✅")
