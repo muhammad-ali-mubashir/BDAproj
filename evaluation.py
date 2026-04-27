@@ -13,10 +13,10 @@ from retrieval import RetrievalPipeline
 import json
 
 class Evaluator:
-    def __init__(self, pdf_path: str):
+    def __init__(self, pdf_source):
         """Initialize evaluator with PDF and indices."""
         print("Loading handbook...")
-        pages = extract_text_from_pdf(pdf_path)
+        pages = extract_text_from_pdf(pdf_source)
         self.chunks = chunk_text(pages)
         print(f"Loaded {len(self.chunks)} chunks")
         

@@ -7,10 +7,10 @@ import json
 class RecommendationEngine:
     """Recommendation system - suggests related handbook sections based on query patterns."""
     
-    def __init__(self, pdf_path: str):
+    def __init__(self, pdf_source):
         """Initialize recommendation engine with PDF chunks."""
         print("Loading handbook for recommendations...")
-        pages = extract_text_from_pdf(pdf_path)
+        pages = extract_text_from_pdf(pdf_source)
         self.chunks = chunk_text(pages)
         
         # Build TF-IDF like keyword extraction

@@ -7,9 +7,9 @@ from indexing import BaselineIndex, MinHashLSHIndex, SimHashIndex
 from typing import List, Dict
 
 class RetrievalPipeline:
-    def __init__(self, pdf_path: str):
+    def __init__(self, pdf_source):
         print("Extracting and chunking text...")
-        pages = extract_text_from_pdf(pdf_path)
+        pages = extract_text_from_pdf(pdf_source)
         self.chunks = chunk_text(pages)
         
         print("Building indices...")

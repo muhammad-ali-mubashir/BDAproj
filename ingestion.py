@@ -7,19 +7,34 @@ import re
 from typing import List, Dict
 
 
-def extract_text_from_pdf(pdf_path: str) -> List[Dict]:
+def extract_text_from_pdf(pdf_source) -> List[Dict]:
     """Extracts text from PDF and returns a list of pages with text."""
     pages_content = []
-    with open(pdf_path, 'rb') as file:
-        pdf_reader = PyPDF2.PdfReader(file)
+    
+    # Check if we got a path string or a file-like object
+    if isinstance(pdf_source, str):
+        file_obj = open(pdf_source, 'rb')
+        should_close = True
+    else:
+        file_obj = pdf_source
+        should_close = False
+        
+    try:
+        pdf_reader = PyPDF2.PdfReader(file_obj)
         for page_num in range(len(pdf_reader.pages)):
             page = pdf_reader.pages[page_num]
             text = page.extract_text()
-            if text.strip():
+            if text and text.strip():
                 pages_content.append({
                     "page_number": page_num + 1,
                     "text": text
                 })
+    except Exception as e:
+        print(f"Error reading PDF: {e}")
+    finally:
+        if should_close:
+            file_obj.close()
+            
     return pages_content
 
 

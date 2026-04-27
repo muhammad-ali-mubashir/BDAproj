@@ -10,10 +10,10 @@ import os
 import json
 
 class ParameterAnalyzer:
-    def __init__(self, pdf_path: str):
+    def __init__(self, pdf_source):
         """Initialize analyzer with PDF."""
         print("Loading handbook for parameter analysis...")
-        pages = extract_text_from_pdf(pdf_path)
+        pages = extract_text_from_pdf(pdf_source)
         self.chunks = chunk_text(pages)
         print(f"Loaded {len(self.chunks)} chunks")
         

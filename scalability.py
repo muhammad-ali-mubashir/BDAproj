@@ -12,10 +12,10 @@ from indexing import BaselineIndex, MinHashLSHIndex, SimHashIndex
 import json
 
 class ScalabilityTester:
-    def __init__(self, pdf_path: str):
+    def __init__(self, pdf_source):
         """Initialize tester with PDF."""
         print("Loading handbook for scalability testing...")
-        pages = extract_text_from_pdf(pdf_path)
+        pages = extract_text_from_pdf(pdf_source)
         self.original_chunks = chunk_text(pages)
         print(f"Loaded {len(self.original_chunks)} chunks from original handbook")
         

@@ -321,7 +321,7 @@ with tab1:
             provider = st.radio("Provider", ["Groq", "OpenAI"], label_visibility="collapsed")
         
         env_key = os.environ.get("GROQ_API_KEY") if provider == "Groq" else os.environ.get("OPENAI_API_KEY")
-        api_key = st.text_input(f"🔑 {provider} API Key", value=env_key if env_key else "", type="password", label_visibility="collapsed")
+        api_key = st.text_input(f"🔑 {provider} API Key", value=env_key if env_key else "", type="password")
 
         if provider == "Groq":
             base_url = "https://api.groq.com/openai/v1"
@@ -330,7 +330,7 @@ with tab1:
             base_url = None
             default_model = "gpt-3.5-turbo"
 
-        model_name = st.text_input("🎯 Model Name", value=default_model, label_visibility="collapsed")
+        model_name = st.text_input("🎯 Model Name", value=default_model)
 
         st.markdown("---")
         st.markdown("**🔍 Retrieval Settings**")
@@ -339,18 +339,32 @@ with tab1:
         top_k = st.slider("Top-K Chunks", 1, 10, 3, label_visibility="collapsed")
         
         st.markdown("---")
+        st.markdown("**📂 Document Selection**")
+        uploaded_file = st.file_uploader("Upload Handbook PDF", type=['pdf'], label_visibility="collapsed")
+        if uploaded_file:
+            st.success(f"✅ Loaded: {uploaded_file.name}")
+        else:
+            if not os.path.exists("Undergraduate-Handbook.pdf"):
+                st.warning("⚠️ **Handbook Missing**: Please upload a PDF handbook to begin.")
+            else:
+                st.info("ℹ️ Using default 'Undergraduate-Handbook.pdf'")
+
+        st.markdown("---")
         st.info("💡 **Hybrid mode** returns results from all 3 methods. Choose single method for faster results.", icon="ℹ️")
 
     # Initialize Pipeline
     @st.cache_resource
-    def get_pipeline():
+    def get_pipeline(uploaded_file):
+        if uploaded_file is not None:
+            return RetrievalPipeline(uploaded_file)
+        
         pdf_path = "Undergraduate-Handbook.pdf"
         if not os.path.exists(pdf_path):
-            st.error(f"File {pdf_path} not found in the directory!")
             return None
         return RetrievalPipeline(pdf_path)
 
-    pipeline = get_pipeline()
+    pipeline = get_pipeline(uploaded_file)
+    pdf_source = uploaded_file if uploaded_file else "Undergraduate-Handbook.pdf"
 
     if pipeline:
         # Query Section - Large and Prominent
@@ -458,7 +472,7 @@ with tab1:
                         st.markdown("_Discover other handbook sections related to your query:_")
                         
                         try:
-                            recommender = RecommendationEngine("Undergraduate-Handbook.pdf")
+                            recommender = RecommendationEngine(pdf_source)
                             recommendations = recommender.get_recommendations(query, all_retrieved_chunks, k=3)
                             
                             if recommendations:
@@ -513,7 +527,7 @@ with tab2:
         if st.button("▶️ Run Evaluation (14 Test Queries)", key="eval_btn", use_container_width=True):
             st.info("🔍 **System Status**: Comparing Baseline (TF-IDF), MinHash+LSH, and SimHash on accuracy and speed across 14 real-world queries.", icon="🔍")
             try:
-                evaluator = Evaluator("Undergraduate-Handbook.pdf")
+                evaluator = Evaluator(pdf_source)
                 test_queries = [
                     "What is the minimum GPA requirement?",
                     "What happens if a student fails a course?",
@@ -701,7 +715,7 @@ with tab3:
         if st.button("▶️ Run Parameter Analysis (5-10 min)", key="analysis_btn", use_container_width=True):
             st.info("⚙️ **System Status**: Optimizing MinHash num_perm, LSH threshold, and SimHash hash_bits to find the best settings for accuracy and speed.", icon="⚙️")
             try:
-                analyzer = ParameterAnalyzer("Undergraduate-Handbook.pdf")
+                analyzer = ParameterAnalyzer(pdf_source)
                 results = analyzer.run_all_analysis()
                 st.success("✅ Parameter analysis completed!", icon="✅")
                 
@@ -779,7 +793,7 @@ with tab4:
         if st.button("▶️ Run Scalability Test (15-30 min)", key="scalability_btn", use_container_width=True):
             st.info("📊 **System Status**: Testing how all three retrieval methods handle Big Data by scaling the handbook from 1x (137 chunks) to 10x (1370 chunks).", icon="📊")
             try:
-                tester = ScalabilityTester("Undergraduate-Handbook.pdf")
+                tester = ScalabilityTester(pdf_source)
                 results = tester.test_scalability(factors=[1, 2, 5, 10])
                 tester.print_scalability_summary(results)
                 st.success("✅ Scalability test completed!", icon="✅")
