@@ -1,29 +1,42 @@
-import fitz  # PyMuPDF
+import PyPDF2
 import re
 from typing import List, Dict
 
+
 def extract_text_from_pdf(pdf_path: str) -> List[Dict]:
     """Extracts text from PDF and returns a list of pages with text."""
-    doc = fitz.open(pdf_path)
     pages_content = []
-    for page_num in range(len(doc)):
-        page = doc.load_page(page_num)
-        text = page.get_text("text")
-        if text.strip():
-            pages_content.append({
-                "page_number": page_num + 1,
-                "text": text
-            })
+    with open(pdf_path, 'rb') as file:
+        pdf_reader = PyPDF2.PdfReader(file)
+        for page_num in range(len(pdf_reader.pages)):
+            page = pdf_reader.pages[page_num]
+            text = page.extract_text()
+            if text.strip():
+                pages_content.append({
+                    "page_number": page_num + 1,
+                    "text": text
+                })
     return pages_content
 
+
+
+#Basic text cleaning.
+
 def clean_text(text: str) -> str:
-    """Basic text cleaning."""
+    
     # Remove excessive whitespaces
     text = re.sub(r'\s+', ' ', text)
     return text.strip()
 
-def chunk_text(pages_content: List[Dict], chunk_size: int = 300, overlap: int = 50) -> List[Dict]:
+
+
+
+
+
+
     """Splits text into meaningful chunks with overlap."""
+
+def chunk_text(pages_content: List[Dict], chunk_size: int = 300, overlap: int = 50) -> List[Dict]:
     chunks = []
     
     # Combine all text first to handle chunks spanning across pages
